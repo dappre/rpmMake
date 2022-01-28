@@ -1,5 +1,50 @@
+* Fri Jan 28 2022 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.16-1
+- Use changelog to get last version
+
+* Thu May 27 2021 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.15-1
+- Update CentOS 7 base image and fix SCL usage
+
+* Wed Jun 24 2020 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.14-1
+- Improve docker, avoid showing progress and fix wrong label and quoting
+
+* Fri Jun 19 2020 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.13-1
+- Fix check and pre steps with cURL and speedup PL
+
+* Fri Jun 19 2020 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.12-1
+- Use cURL rather than wget to avoid SNI issues
+
+* Thu Jun 18 2020 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.11-1
+- Update and improve Docker images and improve documentation with Docker Composer
+
+* Fri Nov 15 2019 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.10-1
+- Update CentOS base image and improve documentation
+
+* Thu Oct 10 2019 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.9-1
+- Fix multi spec template(s) and remote sources for check step
+
+* Thu Oct 10 2019 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.8-1
+- Fix spec filter and switch to non-root user
+
+* Fri Oct 4 2019 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.7-1
+- Fix wrong filter for spec template(s)
+- Avoid mixing multiple spec version
+
+* Wed Sep 11 2019 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.6-1
+- Support sub-packages and scl repos
+- Allow custom vendor field, improve flexibility and documentation
+
+* Wed May 1 2019 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.5-1
+- Allow yum repo config via sudo
+
+* Tue Apr 30 2019 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.4-1
+- Clean yum cache and add switch to avoid debug info
+
+* Tue Feb 26 2019 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.3-1
+- Make sure the check is actually failing
+
 * Mon Feb 25 2019 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.2-1
-- Now self packaging from latest tag on Github
+- Self-test packaging and installation
 
 * Mon Feb 25 2019 Digital-Me Infra Team <infra@digital-me.nl> - 0.0.1-1
-- First spec to package rpmMake itself
+- Adapt program and author in license template
+- Import from RPMGen and implement pipeline

@@ -1,16 +1,18 @@
 MAKEFLAGS += --silent
 
-RPM_NAME	?= default
-RPM_RELEASE	?= 0.1
-RPM_ARCH	?= $(shell arch)
-RPM_SPECS_IN	?= $(wildcard rpm/*spec.in)
+RPM_NAME	?= $(if $(strip $(NAME)),$(NAME),default)
 RPM_CHANGELOG	?= rpm/changelog
-RPM_PACKAGER	?= $(shell getent passwd `whoami` | cut -d ':' -f 5) <$(shell whoami)@$(shell hostname -f)>
-RPM_VENDOR	?= nobody
-RPM_TARGET_DIR	?= $(abspath target)
-RPM_BUILD_DIR	?= $(RPM_TARGET_DIR)/build
-RPM_DISTS_DIR	?= $(RPM_TARGET_DIR)/dists
-RPM_WORKS_DIR	?= $(RPM_TARGET_DIR)/works
+RPM_LASTVER	?= $(shell head -1 $(RPM_CHANGELOG) | grep -Po '\S+$$')
+RPM_VERSION	?= $(if $(strip $(VERSION)),$(VERSION),$(firstword $(subst -, ,$(RPM_LASTVER))))
+RPM_RELEASE	?= $(if $(strip $(RELEASE)),$(RELEASE),$(lastword $(subst -, ,$(RPM_LASTVER))))
+RPM_ARCH	?= $(if $(strip $(ARCH)),$(shell arch))
+RPM_SPECS_IN	?= $(wildcard rpm/*spec.in)
+RPM_PACKAGER	?= $(if $(strip $(PACKAGER)),$(PACKAGER),$(shell getent passwd `whoami` | cut -d ':' -f 5) <$(shell whoami)@$(shell hostname -f)>)
+RPM_VENDOR	?= $(if $(strip $(VENDOR)),$(VENDOR),nobody)
+RPM_TARGET_DIR	?= $(if $(strip $(TARGET_DIR)),$(TARGET_DIR),$(abspath target))
+RPM_BUILD_DIR	?= $(if $(strip $(BUILD_DIR)),$(BUILD_DIR),$(RPM_TARGET_DIR)/build)
+RPM_DISTS_DIR	?= $(if $(strip $(DISTS_DIR)),$(DISTS_DIR),$(RPM_TARGET_DIR)/dists)
+RPM_WORKS_DIR	?= $(if $(strip $(WORKS_DIR)),$(WORKS_DIR),$(RPM_TARGET_DIR)/works)
 RPM_DEBUGINFO	?= 0
 LOG_FILE	?= $(RPM_NAME).log
 
