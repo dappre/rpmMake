@@ -81,7 +81,7 @@ lazyConfig(
 		TARGET_DIR: 'target',
 		GIT_CRED:   'bot-ci-dgm-rsa',
 	],
-	inLabels:      [ 'centos6', 'centos7' ],
+	inLabels:      [ 'centos7' ],
 	onLabels:      [ default: 'linux', docker: 'docker', ],
 	noIndex:	   "(${releaseBranch}|.+_.+)",	// Avoid automatic indexing for release and private branches
 	compressLog:   false,
@@ -93,8 +93,11 @@ lazyStage {
 	onlyif = ( lazyConfig['branch'] != releaseBranch ) // Skip when releasing
 	tasks = [
 		pre: {
-			def currentVersion = gitLastTag()
-			currentBuild.displayName = "#${env.BUILD_NUMBER} ${currentVersion}"
+			// Use version for environment or read it from changelog
+			def version = (env.VERSION.toString() ==~ /[.0-9]+(-[0-9]+)?/) ? env.VERSION : rpmVersion()
+			def release = (version ==~ /.+-.+/) ? version.split('-')[1] : '1'
+			version = version - ~/-\d+/
+			currentBuild.displayName = "#${env.BUILD_NUMBER} ${version}-${release}"
 		},
 		run: {
 			echo "If this runs, it means the lib(s) can be parsed and run until this point"
@@ -107,18 +110,19 @@ lazyStage {
 	onlyif = ( lazyConfig['branch'] != releaseBranch ) // Skip when releasing
 	tasks = [
 		run: {
-			def version = env.VERSION ?: gitLastTag()
-			def release = version ==~ /.+-.+/ ? version.split('-')[1] : '1'
+			// Use version for environment or use last existing tag
+			def version = (env.VERSION.toString() ==~ /[.0-9]+(-[0-9]+)?/) ? env.VERSION : gitLastTag()
+			def release = (version ==~ /.+-.+/) ? version.split('-')[1] : '1'
 			version = version - ~/-\d+/
 			sh(
 """
 DIST="\${LAZY_LABEL}-\$(arch)"
 make \
-RPM_NAME='rpmMake' \
-RPM_VERSION=${version} \
-RPM_RELEASE=${release} \
-RPM_TARGET_DIR="\$(pwd)/\${TARGET_DIR}" \
-RPM_DISTS_DIR="\$(pwd)/\${TARGET_DIR}/dists/\${DIST}" \
+NAME='rpmMake' \
+VERSION=${version} \
+RELEASE=${release} \
+TARGET_DIR="\$(pwd)/\${TARGET_DIR}" \
+DISTS_DIR="\$(pwd)/\${TARGET_DIR}/dists/\${DIST}" \
 LOG_FILE=/dev/stdout
 """
 			)

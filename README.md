@@ -28,6 +28,7 @@ git submodule add --branch stable ssh://git@github.com/digital-me/rpmMake.git rp
 
 - Create a Makefile base on the provided [example](Makefile.example) and change at least the NAME, PACKAGER and VENDOR
 - Copy (or symlink) the Docker [compose](docker-compose.yml) file
+- Copy (or symlink) the [lazyDir](resources/lazyDir) folder (to provide the right Docker context to Jenkins pipeline)
 - If the current user id and group id are not 1000, it is required to define them using environment variables:
 
 ```
@@ -42,7 +43,6 @@ docker-compose build $OS_LABEL
 ```
 
   Where OS_LABEL can take any supported value:
-  - centos6
   - centos7
 
 ## Usage
