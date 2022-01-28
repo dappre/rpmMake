@@ -95,9 +95,8 @@ lazyStage {
 		pre: {
 			// Use version for environment or read it from changelog
 			def version = (env.VERSION.toString() ==~ /[.0-9]+(-[0-9]+)?/) ? env.VERSION : rpmVersion()
-			def release = (version ==~ /.+-.+/) ? version.split('-')[1] : '1'
 			version = version - ~/-\d+/
-			currentBuild.displayName = "#${env.BUILD_NUMBER} ${version}-${release}"
+			currentBuild.displayName = "#${env.BUILD_NUMBER} ${version}"
 		},
 		run: {
 			echo "If this runs, it means the lib(s) can be parsed and run until this point"
